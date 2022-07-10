@@ -1,4 +1,5 @@
-import { GithubRepoFormState } from 'app/pages/DummyPage/Features/GithubRepoForm/slice/types';
+import { UserState } from 'app/pages/Auth/slice/types';
+import { PostState } from 'app/pages/PostPage/slice/types';
 import { ThemeState } from 'styles/theme/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
@@ -10,6 +11,7 @@ import { ThemeState } from 'styles/theme/slice/types';
 */
 export interface RootState {
   theme?: ThemeState;
-  githubRepoForm?: GithubRepoFormState;
+  post?: PostState;
+  user?: UserState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

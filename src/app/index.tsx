@@ -12,9 +12,10 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from '../styles/global-styles';
 
-import { HomePage } from './pages/DummyPage/Loadable';
+// import { HomePage } from './pages/DummyPage/Loadable';
 import { NotFoundPage } from './pages/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
+import { PostPage } from './pages/PostPage';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -29,7 +30,7 @@ export function App() {
       </Helmet>
 
       <Switch>
-        <Route exact path={process.env.PUBLIC_URL + '/'} component={HomePage} />
+        <Route exact path={process.env.PUBLIC_URL + '/'} component={PostPage} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
