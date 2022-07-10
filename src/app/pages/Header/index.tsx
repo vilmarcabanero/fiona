@@ -60,7 +60,7 @@ export function Header(props: Props) {
             }}
           >
             <Typography variant="h6" component="div" color="primary">
-              Post it!
+              Fiona
             </Typography>
 
             <Box
