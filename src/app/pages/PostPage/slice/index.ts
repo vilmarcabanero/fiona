@@ -12,6 +12,7 @@ export const initialState: PostState = {
   isEdit: false,
   postPayload: { message: '' },
   postModalOpen: false,
+  buttonLoading: false,
 };
 
 const slice = createSlice({
@@ -51,6 +52,9 @@ const slice = createSlice({
       state.postModalOpen = action.payload;
     },
     deletePost(state, action: PayloadAction<any>) {},
+    setButtonLoading(state, action: PayloadAction<any>) {
+      state.buttonLoading = action.payload;
+    },
   },
 });
 

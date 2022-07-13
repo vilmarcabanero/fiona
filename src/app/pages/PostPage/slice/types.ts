@@ -7,4 +7,5 @@ export interface PostState {
   isEdit: boolean;
   postPayload: any;
   postModalOpen: boolean;
+  buttonLoading: boolean;
 }
