@@ -55,6 +55,8 @@ const slice = createSlice({
     setButtonLoading(state, action: PayloadAction<any>) {
       state.buttonLoading = action.payload;
     },
+    getPostsUpdate() {},
+    getCommentsUpdate() {},
   },
 });
 

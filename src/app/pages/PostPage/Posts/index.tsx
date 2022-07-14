@@ -27,6 +27,13 @@ export function Posts(props: Props) {
     dispatch(userActions.getAllUsers());
   }, []);
 
+  React.useEffect(() => {
+    setInterval(() => {
+      dispatch(actions.getPostsUpdate());
+      dispatch(actions.getCommentsUpdate());
+    }, 2000);
+  }, []);
+
   return (
     <Container style={{ paddingBottom: '1.5rem' }}>
       {posts.map((post: any) => (

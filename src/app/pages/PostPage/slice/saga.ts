@@ -15,7 +15,26 @@ function* getPosts() {
   }
 }
 
+function* getPostsUpdate() {
+  const api = yield createAPI();
+
+  const response = yield call(api.call, 'getAllPosts');
+  if (response.ok) {
+    yield put(actions.setPosts(response.data));
+  }
+}
+
 function* getComments() {
+  const api = yield createAPI();
+
+  const response = yield call(api.call, 'getAllComments');
+
+  if (response.ok) {
+    yield put(actions.setComments(response.data));
+  }
+}
+
+function* getCommentsUpdate() {
   const api = yield createAPI();
 
   const response = yield call(api.call, 'getAllComments');
@@ -195,7 +214,9 @@ function* deletePost(action: any) {
 
 export function* postSaga() {
   yield takeLatest(actions.getPosts.type, getPosts);
+  yield takeLatest(actions.getPostsUpdate.type, getPostsUpdate);
   yield takeLatest(actions.getComments.type, getComments);
+  yield takeLatest(actions.getCommentsUpdate.type, getCommentsUpdate);
   yield takeLatest(actions.createComment.type, createComment);
   yield takeLatest(actions.createPost.type, createPost);
   yield takeLatest(actions.likePost.type, likePost);
