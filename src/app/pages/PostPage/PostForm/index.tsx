@@ -4,7 +4,14 @@
  *
  */
 import { Close } from '@mui/icons-material';
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material';
 import CustomModal from 'app/components/Modal';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,7 +34,8 @@ export function PostForm(props: Props) {
     dispatch(actions.setIsEdit(false));
   };
 
-  const { isEdit, postModalOpen, postPayload } = useSelector(selectPost);
+  const { isEdit, postModalOpen, postPayload, buttonLoading } =
+    useSelector(selectPost);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -37,6 +45,7 @@ export function PostForm(props: Props) {
 
   const handleCreatePost = (e: any) => {
     e.preventDefault();
+    dispatch(actions.setPostModalOpen(false));
 
     if (isEdit) {
       dispatch(actions.updatePost());
@@ -44,7 +53,6 @@ export function PostForm(props: Props) {
       dispatch(actions.createPost());
     }
 
-    handleClose();
     dispatch(actions.setPostPayload({}));
     dispatch(actions.setIsEdit(false));
   };
@@ -99,7 +107,7 @@ export function PostForm(props: Props) {
             style={{ width: '100%' }}
             onChange={handleChange}
             onKeyUp={e => {
-              if (e.keyCode === 13 && e.shiftKey) {
+              if (e.key === 'Enter' && e.shiftKey) {
                 handleCreatePost(e);
               }
             }}
@@ -111,7 +119,15 @@ export function PostForm(props: Props) {
             fullWidth
             style={{ marginBottom: '1rem', marginTop: '1rem' }}
           >
-            {isEdit ? 'Save' : 'Post'}
+            {!buttonLoading ? (
+              isEdit ? (
+                'Save'
+              ) : (
+                'Post'
+              )
+            ) : (
+              <CircularProgress size={24} style={{ color: '#fff' }} />
+            )}
           </Button>
         </Box>
       </Box>

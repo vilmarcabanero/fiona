@@ -48,7 +48,7 @@ export function Header(props: Props) {
       <ElevationScroll {...props}>
         <AppBar
           style={{
-            backgroundColor: 'transparent',
+            backgroundColor: 'white',
             boxShadow: ' 0 0px 1.5px 0 rgba(0,0,0,0.5)',
           }}
         >
