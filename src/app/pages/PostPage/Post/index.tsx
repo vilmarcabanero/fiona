@@ -96,6 +96,10 @@ export function Post(props: Props) {
 
   //Get all users, then gamit ng foundUserId, find that user, and get its avatarColor property, then set as avatarColor
 
+  const selfLiked = props.post.likers.find(
+    (liker: any) => liker.toString() === userDetails._id?.toString(),
+  );
+
   return (
     <Card
       sx={{ maxWidth: 'md' }}
@@ -146,6 +150,11 @@ export function Post(props: Props) {
           disabled={!isLoggedIn}
           aria-label="like"
           onClick={handleLike}
+          style={
+            selfLiked?.length && {
+              color: `${selfLiked?.length && '#F33E58'}`,
+            }
+          }
         >
           <Badge badgeContent={props.post?.likers.length} color="primary">
             <FavoriteIcon />
