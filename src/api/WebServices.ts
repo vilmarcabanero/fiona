@@ -58,6 +58,10 @@ const WebServices = (options = API.SERVER.WEBSERVICES.OPTIONS) => {
       path: '/posts',
       method: 'delete',
     },
+    hidePost: {
+      path: '/posts/hide',
+      method: 'patch',
+    },
   };
   const call = (type: any, params: any = {}, customPath = null) => {
     const { method, path, headers } = mapping[type];

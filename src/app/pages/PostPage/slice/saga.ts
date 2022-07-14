@@ -9,18 +9,21 @@ function* getPosts() {
 
   yield put(actions.setBackdropLoading(true));
   const response = yield call(api.call, 'getAllPosts');
-  yield put(actions.setBackdropLoading(false));
+  const posts = response.data.filter((post: any) => !post.hidden);
+
   if (response.ok) {
-    yield put(actions.setPosts(response.data));
+    yield put(actions.setPosts(posts));
   }
+  yield put(actions.setBackdropLoading(false));
 }
 
 function* getPostsUpdate() {
   const api = yield createAPI();
 
   const response = yield call(api.call, 'getAllPosts');
+  const posts = response.data.filter((post: any) => !post.hidden);
   if (response.ok) {
-    yield put(actions.setPosts(response.data));
+    yield put(actions.setPosts(posts));
   }
 }
 
@@ -211,6 +214,27 @@ function* deletePost(action: any) {
     yield put(actions.setPosts([...postState.posts, response.data]));
   }
 }
+function* hidePost(action: any) {
+  const api = yield createAPI();
+
+  const postState = yield select(selectPost);
+
+  const oldPosts = postState.posts;
+
+  const updatedPosts = postState.posts.filter(
+    (post: any) => post._id !== action.payload,
+  );
+
+  yield put(actions.setPosts(updatedPosts));
+
+  const response = yield call(api.call, 'hidePost', {
+    id: action.payload,
+  });
+
+  if (!response.ok) {
+    yield put(actions.setPosts(oldPosts));
+  }
+}
 
 export function* postSaga() {
   yield takeLatest(actions.getPosts.type, getPosts);
@@ -222,4 +246,5 @@ export function* postSaga() {
   yield takeLatest(actions.likePost.type, likePost);
   yield takeLatest(actions.updatePost.type, updatePost);
   yield takeLatest(actions.deletePost.type, deletePost);
+  yield takeLatest(actions.hidePost.type, hidePost);
 }

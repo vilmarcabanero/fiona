@@ -74,6 +74,10 @@ export function Post(props: Props) {
     dispatch(actions.deletePost(props.post._id));
   };
 
+  const handleHidePost = () => {
+    dispatch(actions.hidePost(props.post._id));
+  };
+
   const filteredComments = comments.filter(
     (comment: any) => comment.postId === props.post._id,
   );
@@ -93,7 +97,10 @@ export function Post(props: Props) {
   //Get all users, then gamit ng foundUserId, find that user, and get its avatarColor property, then set as avatarColor
 
   return (
-    <Card sx={{ maxWidth: 'md' }} style={{ marginBottom: '1rem' }}>
+    <Card
+      sx={{ maxWidth: 'md' }}
+      style={{ marginBottom: '1rem', paddingBottom: '1rem' }}
+    >
       <CardHeader
         avatar={
           <Avatar
@@ -114,6 +121,7 @@ export function Post(props: Props) {
                 <PostPopoverBody
                   handleEditPost={handleEditPost}
                   handleDeletePost={handleDeletePost}
+                  handleHidePost={handleHidePost}
                 />
               }
             />

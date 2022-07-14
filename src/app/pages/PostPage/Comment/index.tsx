@@ -27,7 +27,6 @@ export default function Comment(props: Props) {
       style={{
         maxWidth: '90%',
         margin: 'auto',
-        marginBottom: '0.75rem',
       }}
     >
       <CardHeader
