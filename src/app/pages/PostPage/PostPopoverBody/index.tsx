@@ -7,6 +7,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HideSourceIcon from '@mui/icons-material/HideSource';
 
 export default function PostPopoverBody(props: any) {
   return (
@@ -27,6 +28,14 @@ export default function PostPopoverBody(props: any) {
                 <DeleteIcon />
               </ListItemIcon>
               <ListItemText primary="Delete post" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={props.handleHidePost}>
+              <ListItemIcon>
+                <HideSourceIcon />
+              </ListItemIcon>
+              <ListItemText primary="Hide post" />
             </ListItemButton>
           </ListItem>
         </List>

@@ -57,6 +57,7 @@ const slice = createSlice({
     },
     getPostsUpdate() {},
     getCommentsUpdate() {},
+    hidePost(state, action: PayloadAction<any>) {},
   },
 });
 
