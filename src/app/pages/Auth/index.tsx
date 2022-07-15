@@ -5,20 +5,20 @@
  */
 import * as React from 'react';
 import { Person } from '@mui/icons-material';
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, Skeleton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfilePopover from './ProfilePopover';
 import ProfilePopoverBody from './ProfilePopoverBody';
 import { useUserSlice } from './slice';
 import { selectUser } from './slice/selectors';
-import { colors } from '../PostPage/Post/colors';
+import { colors } from '../PostPage/Post/utils';
 
 interface Props {}
 
 export function Auth(props: Props) {
   const dispatch = useDispatch();
   const { actions } = useUserSlice();
-  const { userDetails } = useSelector(selectUser);
+  const { userDetails, userLoading } = useSelector(selectUser);
 
   const handleLogout = () => {
     dispatch(actions.logout());
@@ -51,8 +51,12 @@ export function Auth(props: Props) {
           >
             {avatar}
           </Avatar>
-          {userDetails?._id && (
-            <>{`${userDetails.firstName} ${userDetails.lastName}`}</>
+          {userLoading ? (
+            <Skeleton variant="text" width={90} />
+          ) : (
+            userDetails?._id && (
+              <>{`${userDetails.firstName} ${userDetails.lastName}`}</>
+            )
           )}
         </Box>
       }

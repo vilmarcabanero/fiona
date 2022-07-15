@@ -22,6 +22,7 @@ export const initialState: UserState = {
   isPasswordValid: true,
   passwordError: '',
   allUsers: [],
+  userLoading: false,
 };
 
 const slice = createSlice({
@@ -74,6 +75,9 @@ const slice = createSlice({
     getAllUsers() {},
     setAllUsers(state, action: PayloadAction<any>) {
       state.allUsers = action.payload;
+    },
+    setUserLoading(state, action: PayloadAction<any>) {
+      state.userLoading = action.payload;
     },
   },
 });

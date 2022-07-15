@@ -26,7 +26,7 @@ import { Badge } from '@mui/material';
 import { selectPost } from '../slice/selectors';
 import { usePostSlice } from '../slice';
 import { selectUser } from 'app/pages/Auth/slice/selectors';
-import { colors } from './colors';
+import { colors } from './utils';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -134,12 +134,6 @@ export function Post(props: Props) {
         title={props.post.userName}
         subheader={moment(props.post.createdAt).fromNow()}
       />
-      {/* <CardMedia
-        component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
-       /> */}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {props.post.message}

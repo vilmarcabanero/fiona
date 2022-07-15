@@ -1,5 +1,4 @@
 import createAPI from 'api/createAPI';
-import { postActions } from 'app/pages/PostPage/slice';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { userActions as actions } from '.';
 import {
@@ -12,9 +11,9 @@ import { initialLoginPayload, initialRegisterPayload } from './utils';
 function* getUser() {
   const api = yield createAPI();
 
-  yield put(postActions.setBackdropLoading(true));
+  yield put(actions.setUserLoading(true));
   const response = yield call(api.call, 'getUser');
-  yield put(postActions.setBackdropLoading(false));
+  yield put(actions.setUserLoading(false));
   if (response.ok) {
     yield put(actions.setUser(response.data));
   }
@@ -77,9 +76,7 @@ function* logout() {
 function* getAllUsers() {
   const api = yield createAPI();
 
-  yield put(postActions.setBackdropLoading(true));
   const response = yield call(api.call, 'getAllUsers');
-  yield put(postActions.setBackdropLoading(false));
   if (response.ok) {
     yield put(actions.setAllUsers(response.data));
   }

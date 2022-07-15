@@ -8,11 +8,10 @@ import moment from 'moment';
 export const initialState: PostState = {
   posts: [],
   comments: [],
-  backdropLoading: false,
   isEdit: false,
   postPayload: { message: '' },
   postModalOpen: false,
-  buttonLoading: false,
+  postLoading: false,
 };
 
 const slice = createSlice({
@@ -37,9 +36,6 @@ const slice = createSlice({
     },
     createComment(state, action: PayloadAction<any>) {},
     createPost() {},
-    setBackdropLoading(state, action: PayloadAction<any>) {
-      state.backdropLoading = action.payload;
-    },
     likePost(state, action: PayloadAction<any>) {},
     setIsEdit(state, action: PayloadAction<any>) {
       state.isEdit = action.payload;
@@ -52,8 +48,8 @@ const slice = createSlice({
       state.postModalOpen = action.payload;
     },
     deletePost(state, action: PayloadAction<any>) {},
-    setButtonLoading(state, action: PayloadAction<any>) {
-      state.buttonLoading = action.payload;
+    setPostLoading(state, action: PayloadAction<any>) {
+      state.postLoading = action.payload;
     },
     getPostsUpdate() {},
     getCommentsUpdate() {},

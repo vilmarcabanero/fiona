@@ -13,4 +13,5 @@ export interface UserState {
   isPasswordValid: any;
   passwordError: any;
   allUsers: any;
+  userLoading: boolean;
 }

@@ -4,7 +4,7 @@ import { CardHeader } from '@mui/material';
 import moment from 'moment';
 import { selectUser } from 'app/pages/Auth/slice/selectors';
 import { useSelector } from 'react-redux';
-import { colors } from '../Post/colors';
+import { colors } from '../Post/utils';
 
 interface Props {
   comment: any;

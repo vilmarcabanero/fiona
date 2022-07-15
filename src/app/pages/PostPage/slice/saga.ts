@@ -7,14 +7,14 @@ import { selectPost } from './selectors';
 function* getPosts() {
   const api = yield createAPI();
 
-  yield put(actions.setBackdropLoading(true));
+  yield put(actions.setPostLoading(true));
   const response = yield call(api.call, 'getAllPosts');
+  yield put(actions.setPostLoading(false));
   const posts = response.data.filter((post: any) => !post.hidden);
 
   if (response.ok) {
     yield put(actions.setPosts(posts));
   }
-  yield put(actions.setBackdropLoading(false));
 }
 
 function* getPostsUpdate() {

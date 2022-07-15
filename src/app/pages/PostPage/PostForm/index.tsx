@@ -34,8 +34,7 @@ export function PostForm(props: Props) {
     dispatch(actions.setIsEdit(false));
   };
 
-  const { isEdit, postModalOpen, postPayload, buttonLoading } =
-    useSelector(selectPost);
+  const { isEdit, postModalOpen, postPayload } = useSelector(selectPost);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -119,15 +118,7 @@ export function PostForm(props: Props) {
             fullWidth
             style={{ marginBottom: '1rem', marginTop: '1rem' }}
           >
-            {!buttonLoading ? (
-              isEdit ? (
-                'Save'
-              ) : (
-                'Post'
-              )
-            ) : (
-              <CircularProgress size={24} style={{ color: '#fff' }} />
-            )}
+            {isEdit ? 'Save' : 'Post'}
           </Button>
         </Box>
       </Box>

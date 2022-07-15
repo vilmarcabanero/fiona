@@ -11,6 +11,7 @@ import { Post } from '../Post';
 import { useUserSlice } from 'app/pages/Auth/slice';
 import { usePostSlice } from '../slice';
 import { selectPost } from '../slice/selectors';
+import { PostSkeleton } from '../PostSkeleton';
 
 interface Props {}
 
@@ -18,7 +19,7 @@ export function Posts(props: Props) {
   const dispatch = useDispatch();
   const { actions } = usePostSlice();
   const { actions: userActions } = useUserSlice();
-  const { posts } = useSelector(selectPost);
+  const { posts, postLoading } = useSelector(selectPost);
 
   React.useEffect(() => {
     dispatch(actions.getPosts());
@@ -27,18 +28,18 @@ export function Posts(props: Props) {
     dispatch(userActions.getAllUsers());
   }, []);
 
-  React.useEffect(() => {
-    setInterval(() => {
-      dispatch(actions.getPostsUpdate());
-      dispatch(actions.getCommentsUpdate());
-    }, 2000);
-  }, []);
+  // React.useEffect(() => {
+  //   setInterval(() => {
+  //     dispatch(actions.getPostsUpdate());
+  //     dispatch(actions.getCommentsUpdate());
+  //   }, 2000);
+  // }, []);
 
   return (
     <Container style={{ paddingBottom: '1.5rem' }}>
-      {posts.map((post: any) => (
-        <Post post={post} key={post._id} />
-      ))}
+      {postLoading
+        ? [...new Array(4)].map((item, index) => <PostSkeleton key={index} />)
+        : posts.map((post: any) => <Post post={post} key={post._id} />)}
     </Container>
   );
 }
