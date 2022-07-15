@@ -26,12 +26,13 @@ export function PostSkeleton() {
         <Skeleton sx={{ width: '100%' }}></Skeleton>
       </CardContent>
       <CardActions disableSpacing>
-        <Skeleton>
-          <Avatar></Avatar>
-        </Skeleton>
-        <Skeleton>
-          <Avatar></Avatar>
-        </Skeleton>
+        <Skeleton
+          variant="circular"
+          width={28}
+          height={28}
+          style={{ marginRight: '0.8rem', marginLeft: '0.5rem' }}
+        />
+        <Skeleton variant="circular" width={28} height={28} />
       </CardActions>
     </Card>
   );

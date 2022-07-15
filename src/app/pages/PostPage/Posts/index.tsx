@@ -38,7 +38,7 @@ export function Posts(props: Props) {
   return (
     <Container style={{ paddingBottom: '1.5rem' }}>
       {postLoading
-        ? [...new Array(4)].map((item, index) => <PostSkeleton key={index} />)
+        ? [...new Array(5)].map((item, index) => <PostSkeleton key={index} />)
         : posts.map((post: any) => <Post post={post} key={post._id} />)}
     </Container>
   );
