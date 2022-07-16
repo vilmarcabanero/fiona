@@ -54,7 +54,7 @@ export function LoginForm(props: Props) {
   };
 
   const modalProps = {
-    button: 'Login',
+    button: <Button onClick={handleOpen}>Login</Button>,
     style,
     open: loginModalOpen,
     handleClose,

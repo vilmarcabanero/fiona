@@ -26,6 +26,10 @@ const WebServices = (options = API.SERVER.WEBSERVICES.OPTIONS) => {
       path: '/auth/user',
       method: 'getNoParam',
     },
+    getUserByUsername: {
+      path: '/auth/user',
+      method: 'get',
+    },
     getAllUsers: {
       path: '/auth/user/all',
       method: 'getNoParam',

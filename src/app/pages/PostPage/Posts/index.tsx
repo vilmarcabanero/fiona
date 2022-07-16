@@ -4,7 +4,7 @@
  * Posts
  *
  */
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../Post';
@@ -12,6 +12,7 @@ import { useUserSlice } from 'app/pages/Auth/slice';
 import { usePostSlice } from '../slice';
 import { selectPost } from '../slice/selectors';
 import { PostSkeleton } from '../PostSkeleton';
+import { useProfileSlice } from 'app/pages/ProfilePage/slice';
 
 interface Props {}
 
@@ -20,6 +21,7 @@ export function Posts(props: Props) {
   const { actions } = usePostSlice();
   const { actions: userActions } = useUserSlice();
   const { posts, postLoading } = useSelector(selectPost);
+  const { actions: profileActions } = useProfileSlice();
 
   React.useEffect(() => {
     dispatch(actions.getPosts());
@@ -36,10 +38,10 @@ export function Posts(props: Props) {
   // }, []);
 
   return (
-    <Container style={{ paddingBottom: '1.5rem' }}>
+    <Box style={{ paddingBottom: '1.5rem' }}>
       {postLoading
         ? [...new Array(5)].map((item, index) => <PostSkeleton key={index} />)
         : posts.map((post: any) => <Post post={post} key={post._id} />)}
-    </Container>
+    </Box>
   );
 }

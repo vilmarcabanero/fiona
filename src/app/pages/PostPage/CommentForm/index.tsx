@@ -44,12 +44,11 @@ export default function CommentForm(props: any) {
       <div>
         <TextField
           id="comment-write"
-          label="Comment"
           placeholder="Write your comment here."
           multiline
           variant="standard"
           value={commentValue}
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginTop: 20 }}
           onChange={handleChange}
           disabled={!isLoggedIn}
           onKeyDown={e => {

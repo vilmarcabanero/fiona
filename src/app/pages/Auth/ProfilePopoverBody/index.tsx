@@ -5,15 +5,19 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { AccountCircle, Logout } from '@mui/icons-material';
+import { Logout } from '@mui/icons-material';
 import { Divider } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../slice/selectors';
+import { ProfilePicture } from 'app/components/ProfilePicture';
 
 export default function ProfilePopoverBody(props: any) {
+  const { userDetails } = useSelector(selectUser);
   return (
     <Box
       sx={{
-        width: 200,
-        maxWidth: 360,
+        width: 230,
+        maxWidth: 380,
         bgcolor: 'background.paper',
       }}
     >
@@ -22,9 +26,11 @@ export default function ProfilePopoverBody(props: any) {
           <ListItem disablePadding>
             <ListItemButton onClick={props.handleViewProfile}>
               <ListItemIcon>
-                <AccountCircle />
+                <ProfilePicture />
               </ListItemIcon>
-              <ListItemText primary="View Profile" />
+              <ListItemText
+                primary={`${userDetails.firstName} ${userDetails.lastName}`}
+              />
             </ListItemButton>
           </ListItem>
           <Divider />

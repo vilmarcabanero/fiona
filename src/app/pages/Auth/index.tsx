@@ -12,54 +12,36 @@ import ProfilePopoverBody from './ProfilePopoverBody';
 import { useUserSlice } from './slice';
 import { selectUser } from './slice/selectors';
 import { colors } from '../PostPage/Post/utils';
+import { useNavigate } from 'react-router-dom';
+import { usePostSlice } from '../PostPage/slice';
+import { selectPost } from '../PostPage/slice/selectors';
+import { scrollToTop } from 'utils/misc';
+import { ProfilePicture } from 'app/components/ProfilePicture';
 
 interface Props {}
 
 export function Auth(props: Props) {
   const dispatch = useDispatch();
   const { actions } = useUserSlice();
+  const { actions: postActions } = usePostSlice();
   const { userDetails, userLoading } = useSelector(selectUser);
+  const { isEdit } = useSelector(selectPost);
+
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(actions.logout());
   };
 
   const handleViewProfile = () => {
-    alert('Wala pa to men.');
+    dispatch(postActions.setPopoverOpen(true));
+    navigate(`/${userDetails.username}`);
+    scrollToTop();
   };
-
-  const avatar = userDetails.firstName?.length ? (
-    [...userDetails.firstName][0]
-  ) : (
-    <Person />
-  );
 
   return (
     <ProfilePopover
-      button={
-        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Avatar
-            sx={{
-              bgcolor: colors[userDetails.avatarColor],
-              width: '1.5rem',
-              height: '1.5rem',
-              fontSize: '15px',
-              marginTop: '1px',
-              marginRight: '3px',
-            }}
-            aria-label="recipe"
-          >
-            {avatar}
-          </Avatar>
-          {userLoading ? (
-            <Skeleton variant="text" width={90} />
-          ) : (
-            userDetails?._id && (
-              <>{`${userDetails.firstName} ${userDetails.lastName}`}</>
-            )
-          )}
-        </Box>
-      }
+      button={<ProfilePicture />}
       body={
         <ProfilePopoverBody
           handleLogout={handleLogout}
