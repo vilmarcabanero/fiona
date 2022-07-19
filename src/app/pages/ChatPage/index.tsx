@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container } from '@mui/material';
-import { Header } from 'app/pages/Header';
 import React from 'react';
+import { Header } from 'app/components/Header';
 import { useDispatch } from 'react-redux';
 import { useUserSlice } from '../Auth/slice';
+import { ChatList } from './ChatList';
+import { ChatMessages } from './ChatMessages';
+import { ChatNavbar } from './ChatNavbar';
+import { MessageForm } from './MessageForm';
 
-export function MessagesPage() {
+export function ChatPage() {
   const { actions: userActions } = useUserSlice();
   const dispatch = useDispatch();
 
@@ -16,7 +19,10 @@ export function MessagesPage() {
   return (
     <React.Fragment>
       <Header />
-      <Container maxWidth="md">Messages</Container>
+      <ChatList />
+      <ChatMessages />
+      <ChatNavbar />
+      <MessageForm />
     </React.Fragment>
   );
 }

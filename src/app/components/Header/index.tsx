@@ -4,16 +4,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import { selectUser } from '../Auth/slice/selectors';
+import MessageIcon from '@mui/icons-material/Message';
+import { selectUser } from '../../pages/Auth/slice/selectors';
 import { useSelector } from 'react-redux';
-import { LoginForm } from '../Auth/LoginForm';
-import { RegisterForm } from '../Auth/RegisterForm';
-import { PostForm } from '../PostPage/PostForm';
-import { Auth } from '../Auth';
-import { Button, IconButton } from '@mui/material';
+import { LoginForm } from '../../pages/Auth/LoginForm';
+import { RegisterForm } from '../../pages/Auth/RegisterForm';
+import { Auth } from '../../pages/Auth';
+import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { scrollToTop } from 'utils/misc';
-import MessageIcon from '@mui/icons-material/Message';
 
 interface Props {}
 
@@ -30,7 +29,8 @@ export function Header(props: Props) {
         sx={{
           backgroundColor: 'white',
           borderBottom: '1px solid #EBEBEB',
-          boxShadow: '0 -1px 1.5px 0 rgba(0,0,0,0.5)',
+          // boxShadow: '0 -1px 1.5px 0 rgba(0,0,0,0.5)',
+          boxShadow: '0 1px 2px 0 rgba(0,0,0,.1)',
           display: { xs: 'flex' },
           justifyContent: 'center',
           alignItems: 'space-between',
@@ -71,14 +71,17 @@ export function Header(props: Props) {
             }}
           >
             {/* {isLoggedIn && <PostForm />} */}
-            <IconButton
-              sx={{ width: 41, height: 41, background: '#E1E1E1' }}
-              onClick={() => {
-                navigate('/messages');
-              }}
-            >
-              <MessageIcon sx={{ color: 'black' }} />
-            </IconButton>
+            {isLoggedIn && (
+              <IconButton
+                sx={{ width: 41, height: 41, background: '#E1E1E1' }}
+                onClick={() => {
+                  navigate('/chat');
+                }}
+              >
+                <MessageIcon sx={{ color: 'black' }} />
+              </IconButton>
+            )}
+
             {isLoggedIn ? (
               <Auth />
             ) : isLoggingIn ? (

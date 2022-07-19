@@ -20,7 +20,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { ProfileNotFoundPage } from './pages/ProfilePage/ProfileNotFoundPage';
 import { selectProfile } from './pages/ProfilePage/slice/selectors';
 import { useSelector } from 'react-redux';
-import { MessagesPage } from './pages/MessagesPage';
+import { ChatPage } from './pages/ChatPage';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -37,10 +37,7 @@ export function App() {
 
       <Routes>
         <Route path={process.env.PUBLIC_URL + '/'} element={<PostPage />} />
-        <Route
-          path={process.env.PUBLIC_URL + '/messages'}
-          element={<MessagesPage />}
-        />
+        <Route path={process.env.PUBLIC_URL + '/chat'} element={<ChatPage />} />
         <Route
           path={process.env.PUBLIC_URL + '/:username'}
           element={!currentUser ? <ProfileNotFoundPage /> : <ProfilePage />}

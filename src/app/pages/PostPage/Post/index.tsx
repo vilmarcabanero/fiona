@@ -8,9 +8,7 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -23,7 +21,7 @@ import Comment from '../Comment';
 import PostPopoverBody from '../PostPopoverBody';
 import CommentForm from '../CommentForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { Badge, Divider, Box, Grid } from '@mui/material';
+import { Divider, Box, Grid } from '@mui/material';
 import { selectPost } from '../slice/selectors';
 import { usePostSlice } from '../slice';
 import { selectUser } from 'app/pages/Auth/slice/selectors';
@@ -31,7 +29,6 @@ import { colors } from './utils';
 import { ProfilePicture } from 'app/components/ProfilePicture';
 import { useNavigate } from 'react-router-dom';
 import { scrollToTop } from 'utils/misc';
-import { selectProfile } from 'app/pages/ProfilePage/slice/selectors';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -54,7 +51,6 @@ export function Post(props: Props) {
   const [expanded, setExpanded] = React.useState(false);
   const { comments } = useSelector(selectPost);
   const { userDetails, isLoggedIn, allUsers } = useSelector(selectUser);
-  const { currentUser } = useSelector(selectProfile);
   const { actions } = usePostSlice();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,6 +58,8 @@ export function Post(props: Props) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const avatar = props.post?.userName.charAt(0);
 
   const handleEditPost = () => {
     dispatch(actions.setIsEdit(true));
@@ -116,6 +114,7 @@ export function Post(props: Props) {
         // sx={{ p: 0, '&:last-child': { pb: 0 } }}
         avatar={
           <ProfilePicture
+            avatar={avatar}
             bgcolor={colors[avatarColor]}
             onClick={() => navigate(`/${props.post.username}`)}
           />
@@ -146,7 +145,7 @@ export function Post(props: Props) {
               },
             }}
             onClick={() => {
-              navigate(`/${currentUser.username}`);
+              navigate(`/${props.post.username}`);
               scrollToTop();
             }}
           >
@@ -205,9 +204,8 @@ export function Post(props: Props) {
               sx={{
                 display: 'flex',
                 height: '24px',
+                justifyContent: 'flex-end',
               }}
-              direction="row"
-              justifyContent="flex-end"
             >
               <Typography
                 sx={{

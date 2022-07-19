@@ -6,7 +6,5 @@ export const style = {
   width: '500px',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 1,
-  paddingTop: 2,
   borderRadius: 1,
 };

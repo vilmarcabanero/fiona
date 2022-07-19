@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
-import { Fab, Grid, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPost } from 'app/pages/PostPage/slice/selectors';
 import { usePostSlice } from 'app/pages/PostPage/slice';

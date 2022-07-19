@@ -7,6 +7,7 @@ import { ProfileState } from './types';
 export const initialState: ProfileState = {
   currentUser: {},
   profileLoading: false,
+  isViewProfileClicked: false,
 };
 
 const slice = createSlice({
@@ -14,11 +15,15 @@ const slice = createSlice({
   initialState,
   reducers: {
     getUserByUsername(_, action: PayloadAction<string | undefined>) {},
-    setUserByUsername(state, action: PayloadAction<any>) {
+    setUserCurrentUser(state, action: PayloadAction<any>) {
       state.currentUser = action.payload;
     },
     setProfileLoading(state, action: PayloadAction<boolean>) {
       state.profileLoading = action.payload;
+    },
+    updateProfilePicture(_, action: PayloadAction<string>) {},
+    setIsViewProfileClicked(state, action: PayloadAction<boolean>) {
+      state.isViewProfileClicked = action.payload;
     },
   },
 });

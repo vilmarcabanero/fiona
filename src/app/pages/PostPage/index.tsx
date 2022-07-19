@@ -5,13 +5,17 @@
  */
 import { Container } from '@mui/material';
 import * as React from 'react';
-import { Header } from '../Header';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../Auth/slice/selectors';
+import { Header } from '../../components/Header';
 import { PostForm } from './PostForm';
 import { Posts } from './Posts';
 
 interface Props {}
 
 export function PostPage(props: Props) {
+  const { isLoggedIn } = useSelector(selectUser);
+
   return (
     <React.Fragment>
       <Header />
@@ -22,7 +26,7 @@ export function PostPage(props: Props) {
           maxWidth: '704px',
         }}
       >
-        <PostForm />
+        {isLoggedIn && <PostForm />}
         <Posts />
       </Container>
     </React.Fragment>

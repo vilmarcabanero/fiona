@@ -1,5 +1,5 @@
 import { Container } from '@mui/material';
-import { Header } from 'app/pages/Header';
+import { Header } from 'app/components/Header';
 import React from 'react';
 
 export function ProfileNotFoundPage() {

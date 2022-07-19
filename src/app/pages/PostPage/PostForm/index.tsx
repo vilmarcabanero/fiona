@@ -3,22 +3,20 @@
  * PostForm
  *
  */
-import { Close } from '@mui/icons-material';
+import { Close, Public } from '@mui/icons-material';
 import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
-  CircularProgress,
   Divider,
   IconButton,
-  makeStyles,
   TextField,
   Typography,
 } from '@mui/material';
 import CustomModal from 'app/components/Modal';
 import { ProfilePicture } from 'app/components/ProfilePicture';
+import { selectUser } from 'app/pages/Auth/slice/selectors';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePostSlice } from '../slice';
@@ -41,6 +39,7 @@ export function PostForm(props: Props) {
   };
 
   const { isEdit, postModalOpen, postPayload } = useSelector(selectPost);
+  const { userDetails } = useSelector(selectUser);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -70,6 +69,7 @@ export function PostForm(props: Props) {
       <CardContent sx={{ marginBottom: '-10px', display: 'flex' }}>
         <ProfilePicture />
         <TextField
+          value=""
           onClick={handleOpen}
           fullWidth
           placeholder="Post your memories here."
@@ -94,31 +94,60 @@ export function PostForm(props: Props) {
     <CustomModal modal={modalProps}>
       <Box
         component="form"
-        sx={{
-          '& .MuiTextField-root': { width: '30h' },
-          width: '500px',
-        }}
-        style={{
-          marginBottom: '0.75rem',
-          maxWidth: '90%',
-          margin: 'auto',
-        }}
         noValidate
         autoComplete="off"
         onSubmit={handleCreatePost}
       >
-        <Box style={{ position: 'relative' }}>
+        <Box
+          style={{ position: 'relative', margin: '12px', textAlign: 'center' }}
+        >
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             {isEdit ? 'Edit' : 'Write'} post
           </Typography>
           <IconButton
             onClick={handleClose}
-            style={{ position: 'absolute', right: -15, top: -7 }}
+            sx={{
+              position: 'absolute',
+              top: '-3px',
+              right: 0,
+              backgroundColor: 'rgba(237,237,237, 0.75)',
+            }}
           >
             <Close />
           </IconButton>
         </Box>
-        <Box>
+        <Divider />
+        <Box sx={{ display: 'flex', margin: '12px' }}>
+          <ProfilePicture />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginLeft: '10px',
+            }}
+          >
+            <Typography>{`${userDetails.firstName} ${userDetails.lastName}`}</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+              }}
+            >
+              <Public
+                sx={{
+                  fontSize: '12px',
+                  marginRight: '3px',
+                  marginBottom: '2.5px',
+                }}
+              />
+              <Typography variant="body2" sx={{ fontSize: '12px' }}>
+                Public
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ margin: '12px' }}>
           <TextField
             id="post-write"
             label=""
@@ -145,7 +174,6 @@ export function PostForm(props: Props) {
             fullWidth
             style={{
               textTransform: 'none',
-              marginBottom: '5px',
               marginTop: '1rem',
             }}
           >

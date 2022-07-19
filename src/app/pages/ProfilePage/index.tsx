@@ -2,16 +2,17 @@
 import { Container } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useUserSlice } from '../Auth/slice';
-import { selectUser } from '../Auth/slice/selectors';
-import { Header } from '../Header';
+import { Header } from '../../components/Header';
 import { ProfilePageSkeleton } from './ProfilePageSkeleton';
 import { useProfileSlice } from './slice';
 import { selectProfile } from './slice/selectors';
+import { ProfilePictureUpload } from './ProfilePictureUpload';
 
 export function ProfilePage(props: any) {
-  const { currentUser, profileLoading } = useSelector(selectProfile);
+  const { currentUser, profileLoading, isViewProfileClicked } =
+    useSelector(selectProfile);
 
   const { actions } = useProfileSlice();
   const { actions: userActions } = useUserSlice();
@@ -23,7 +24,7 @@ export function ProfilePage(props: any) {
   React.useEffect(() => {
     dispatch(actions.getUserByUsername(username));
     dispatch(userActions.getUser());
-  }, []);
+  }, [isViewProfileClicked]);
 
   return (
     <React.Fragment>
@@ -33,7 +34,9 @@ export function ProfilePage(props: any) {
         {profileLoading ? (
           <ProfilePageSkeleton />
         ) : (
-          <div>{currentUser.firstName}</div>
+          <div>
+            {currentUser.firstName} <br /> <ProfilePictureUpload />
+          </div>
         )}
       </Container>
     </React.Fragment>
