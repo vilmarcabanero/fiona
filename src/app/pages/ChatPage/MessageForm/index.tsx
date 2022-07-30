@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import { Box, IconButton, Paper, TextField } from '@mui/material';
+import { Box, IconButton, TextField } from '@mui/material';
 
 export const MessageForm = () => {
   const handleSendMessage = (
@@ -12,7 +12,7 @@ export const MessageForm = () => {
     formikHelpers.resetForm();
   };
   return (
-    <Paper
+    <Box
       sx={{
         width: 'calc(100% - 360px)',
         height: '60px',
@@ -42,6 +42,7 @@ export const MessageForm = () => {
                 placeholder="Aa"
                 fullWidth
                 size="small"
+                autoComplete="off"
               />
               <IconButton>
                 <ThumbUpIcon sx={{ color: '#2078F4' }} />
@@ -50,6 +51,6 @@ export const MessageForm = () => {
           </Form>
         )}
       </Formik>
-    </Paper>
+    </Box>
   );
 };

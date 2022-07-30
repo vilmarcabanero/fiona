@@ -17,18 +17,23 @@ export function PostPage(props: Props) {
   const { isLoggedIn } = useSelector(selectUser);
 
   return (
-    <React.Fragment>
+    <div
+      style={{
+        backgroundColor: 'rgba(237,237,237, 0.75)',
+        width: '100%',
+      }}
+    >
       <Header />
       <Container
         maxWidth={false}
         sx={{
-          marginTop: '10px',
+          paddingTop: '10px',
           maxWidth: '704px',
         }}
       >
         {isLoggedIn && <PostForm />}
         <Posts />
       </Container>
-    </React.Fragment>
+    </div>
   );
 }

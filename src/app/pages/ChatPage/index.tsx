@@ -20,8 +20,8 @@ export function ChatPage() {
     <React.Fragment>
       <Header />
       <ChatList />
-      <ChatMessages />
       <ChatNavbar />
+      <ChatMessages />
       <MessageForm />
     </React.Fragment>
   );

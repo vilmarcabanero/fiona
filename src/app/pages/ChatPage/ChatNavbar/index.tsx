@@ -1,9 +1,9 @@
 import React from 'react';
-import { Paper } from '@mui/material';
+import { Box } from '@mui/material';
 
 export const ChatNavbar = () => {
   return (
-    <Paper
+    <Box
       sx={{
         width: 'calc(100% - 360px)',
         height: '60px',
@@ -14,6 +14,8 @@ export const ChatNavbar = () => {
         boxShadow: '0 1px 2px 0 rgba(0,0,0,.1)',
         borderRadius: 0,
       }}
-    ></Paper>
+    >
+      Why?
+    </Box>
   );
 };

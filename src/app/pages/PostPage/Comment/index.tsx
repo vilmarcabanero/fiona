@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import { CardHeader, Typography } from '@mui/material';
 import moment from 'moment';
 import { selectUser } from 'app/pages/Auth/slice/selectors';

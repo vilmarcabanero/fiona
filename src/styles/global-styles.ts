@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     padding-top: ${StyleConstants.NAV_BAR_HEIGHT};
     /* background-color: ${p => p.theme.background}; */
     /* background-color: #EDEDED; */
-    background-color: rgba(237,237,237, 0.75);
+    /* background-color: rgba(237,237,237, 0.75); */
   }
 
   body.fontLoaded {
