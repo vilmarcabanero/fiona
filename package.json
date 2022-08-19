@@ -61,6 +61,7 @@
     "sanitize.css": "13.0.0",
     "serve": "13.0.2",
     "shelljs": "0.8.5",
+    "socket.io-client": "4.5.1",
     "styled-components": "5.3.3",
     "stylelint": "14.2.0",
     "stylelint-config-recommended": "6.0.0",

@@ -12,6 +12,7 @@ import { useUserSlice } from 'app/pages/Auth/slice';
 import { usePostSlice } from '../slice';
 import { selectPost } from '../slice/selectors';
 import { PostSkeleton } from '../PostSkeleton';
+import { socket, SocketEvents } from 'utils/socket';
 
 interface Props {}
 
@@ -28,12 +29,15 @@ export function Posts(props: Props) {
     dispatch(userActions.getAllUsers());
   }, []);
 
-  // React.useEffect(() => {
-  //   setInterval(() => {
-  //     dispatch(actions.getPostsUpdate());
-  //     dispatch(actions.getCommentsUpdate());
-  //   }, 2000);
-  // }, []);
+  // Receive posts from socket server.
+  React.useEffect(() => {
+    socket().on(SocketEvents.receive_posts, data => {
+      dispatch(actions.setPosts([...data]));
+    });
+    socket().on(SocketEvents.receive_comments, data => {
+      dispatch(actions.setComments([...data]));
+    });
+  }, [socket]);
 
   return (
     <Container style={{ paddingBottom: '1.5rem' }}>

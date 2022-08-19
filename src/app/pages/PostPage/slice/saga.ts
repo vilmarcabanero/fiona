@@ -2,6 +2,7 @@ import createAPI from 'api/createAPI';
 import { selectUser } from 'app/pages/Auth/slice/selectors';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { postActions as actions } from '.';
+import { socket, SocketEvents } from 'utils/socket';
 import { selectPost } from './selectors';
 
 function* getPosts() {
@@ -68,7 +69,10 @@ function* createComment(action: any) {
     message: action.payload.message,
   };
 
-  yield put(actions.setComments([...postState.comments, newComment]));
+  const newComments = [...postState.comments, newComment];
+  yield put(actions.setComments(newComments));
+  socket().emit(SocketEvents.send_comments, newComments);
+
   const response = yield call(api.call, 'createComment', action.payload);
 
   const updatedComments = postState.posts.filter(
@@ -101,8 +105,9 @@ function* createPost(action: any) {
     message: postState.postPayload.message,
   };
 
-  yield put(actions.setPosts([...postState.posts, newPost]));
-  // yield put(actions.setPosts((prevPosts: any) => [...prevPosts, newPost]));
+  const newPosts = [...postState.posts, newPost];
+  yield put(actions.setPosts(newPosts));
+  socket().emit(SocketEvents.send_posts, newPosts);
 
   const response = yield call(api.call, 'createPost', {
     message: postState.postPayload.message,
@@ -155,6 +160,7 @@ function* likePost(action: any) {
   });
 
   yield put(actions.setPosts(updatedPosts));
+  socket().emit(SocketEvents.send_posts, updatedPosts);
 
   const response = yield call(api.call, 'likePost', { id: action.payload });
 
@@ -180,6 +186,7 @@ function* updatePost(action: any) {
     });
 
   yield put(actions.setPosts(updatedPosts));
+  socket().emit(SocketEvents.send_posts, updatedPosts);
 
   const response = yield call(api.call, 'updatePost', {
     id: postState.postPayload.id,
@@ -201,7 +208,9 @@ function* deletePost(action: any) {
   const newPosts = postState.posts.filter(
     (post: any) => post._id !== action.payload,
   );
+
   yield put(actions.setPosts(newPosts));
+  socket().emit(SocketEvents.send_posts, newPosts);
 
   const response = yield call(api.call, 'deletePost', action.payload);
 
@@ -226,6 +235,7 @@ function* hidePost(action: any) {
   );
 
   yield put(actions.setPosts(updatedPosts));
+  socket().emit(SocketEvents.send_posts, updatedPosts);
 
   const response = yield call(api.call, 'hidePost', {
     id: action.payload,
