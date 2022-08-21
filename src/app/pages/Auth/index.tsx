@@ -29,7 +29,7 @@ export function Auth(props: Props) {
   };
 
   const avatar = userDetails.firstName?.length ? (
-    [...userDetails.firstName][0]
+    userDetails.firstName[0]
   ) : (
     <Person />
   );

@@ -4,14 +4,7 @@
  *
  */
 import { Close } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import CustomModal from 'app/components/Modal';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';

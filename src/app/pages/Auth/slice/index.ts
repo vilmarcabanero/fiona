@@ -3,10 +3,10 @@ import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { userSaga } from './saga';
 import { UserState } from './types';
-import { initialRegisterPayload } from './utils';
+import { initialRegisterPayload, initialUser } from './utils';
 
 export const initialState: UserState = {
-  userDetails: {},
+  userDetails: initialUser,
   loginPayload: {
     email: '',
     password: '',

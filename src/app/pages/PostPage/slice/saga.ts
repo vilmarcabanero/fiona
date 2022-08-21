@@ -4,47 +4,52 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { postActions as actions } from '.';
 import { socket, SocketEvents } from 'utils/socket';
 import { selectPost } from './selectors';
+import * as db from 'db/controllers/posts.controller';
+import { Comment } from 'db/models/Comment';
+import { Post } from 'db/models/Post';
+import { ApiResponse } from 'apisauce';
+import {
+  _getAllComments,
+  _setComments,
+} from 'db/controllers/comments.controller';
 
 function* getPosts() {
-  const api = yield createAPI();
+  const cachedPosts: Post[] | null = yield db._getAllPosts();
 
-  yield put(actions.setPostLoading(true));
-  const response = yield call(api.call, 'getAllPosts');
-  yield put(actions.setPostLoading(false));
-  const posts = response.data.filter((post: any) => !post.hidden);
-
-  if (response.ok) {
+  if (cachedPosts) {
+    const posts = cachedPosts.filter((post: any) => !post.hidden);
     yield put(actions.setPosts(posts));
-  }
-}
+  } else {
+    const api = yield createAPI();
 
-function* getPostsUpdate() {
-  const api = yield createAPI();
+    yield put(actions.setPostLoading(true));
+    const response: ApiResponse<Post[]> = yield call(api.call, 'getAllPosts');
+    yield put(actions.setPostLoading(false));
+    const posts: Post[] | undefined = response.data?.filter(
+      post => !post.hidden,
+    );
 
-  const response = yield call(api.call, 'getAllPosts');
-  const posts = response.data.filter((post: any) => !post.hidden);
-  if (response.ok) {
-    yield put(actions.setPosts(posts));
+    if (response.ok) {
+      yield put(actions.setPosts(posts));
+      if (posts) yield db._setPosts(posts);
+    }
   }
 }
 
 function* getComments() {
-  const api = yield createAPI();
+  const cachedComments: Post[] | null = yield _getAllComments();
 
-  const response = yield call(api.call, 'getAllComments');
+  if (cachedComments) {
+    yield put(actions.setComments(cachedComments));
+  } else {
+    const api = yield createAPI();
 
-  if (response.ok) {
-    yield put(actions.setComments(response.data));
-  }
-}
+    const response = yield call(api.call, 'getAllComments');
 
-function* getCommentsUpdate() {
-  const api = yield createAPI();
-
-  const response = yield call(api.call, 'getAllComments');
-
-  if (response.ok) {
-    yield put(actions.setComments(response.data));
+    if (response.ok) {
+      yield put(actions.setComments(response.data));
+      if (response.data) yield _setComments(response.data);
+    }
   }
 }
 
@@ -71,15 +76,20 @@ function* createComment(action: any) {
 
   const newComments = [...postState.comments, newComment];
   yield put(actions.setComments(newComments));
-  socket().emit(SocketEvents.send_comments, newComments);
 
-  const response = yield call(api.call, 'createComment', action.payload);
+  const { data, ok }: ApiResponse<Comment[]> = yield call(
+    api.call,
+    'createComment',
+    action.payload,
+  );
 
   const updatedComments = postState.posts.filter(
     (comment: any) => comment._id !== id,
   );
-  if (response.ok) {
-    yield put(actions.setComments([...postState.comments, response.data]));
+  if (ok) {
+    const updatedComments = [...postState.comments, data];
+    yield put(actions.setComments(updatedComments));
+    socket().emit(SocketEvents.send_comments, updatedComments);
   } else {
     yield put(actions.setComments(updatedComments));
   }
@@ -107,7 +117,6 @@ function* createPost(action: any) {
 
   const newPosts = [...postState.posts, newPost];
   yield put(actions.setPosts(newPosts));
-  socket().emit(SocketEvents.send_posts, newPosts);
 
   const response = yield call(api.call, 'createPost', {
     message: postState.postPayload.message,
@@ -115,9 +124,11 @@ function* createPost(action: any) {
 
   const updatedPosts = postState.posts.filter((post: any) => post._id !== id);
   if (response.ok) {
-    yield put(actions.setPosts([...updatedPosts, response.data]));
+    const newPosts = [...updatedPosts, response.data]; // This is necessary to put to the state the real data like real _id.
+    yield put(actions.setPosts(newPosts));
+    socket().emit(SocketEvents.send_posts, newPosts);
   } else {
-    yield put(actions.setPosts(updatedPosts));
+    // yield put(actions.setPosts(updatedPosts));
   }
 
   yield put(actions.setPostPayload({}));
@@ -160,11 +171,11 @@ function* likePost(action: any) {
   });
 
   yield put(actions.setPosts(updatedPosts));
-  socket().emit(SocketEvents.send_posts, updatedPosts);
 
   const response = yield call(api.call, 'likePost', { id: action.payload });
-
-  if (!response.ok) {
+  if (response.ok) {
+    socket().emit(SocketEvents.send_posts, updatedPosts);
+  } else {
     yield put(actions.setPosts(oldPosts));
   }
 }
@@ -186,7 +197,6 @@ function* updatePost(action: any) {
     });
 
   yield put(actions.setPosts(updatedPosts));
-  socket().emit(SocketEvents.send_posts, updatedPosts);
 
   const response = yield call(api.call, 'updatePost', {
     id: postState.postPayload.id,
@@ -195,7 +205,9 @@ function* updatePost(action: any) {
     },
   });
 
-  if (!response.ok) {
+  if (response.ok) {
+    socket().emit(SocketEvents.send_posts, updatedPosts);
+  } else {
     yield put(actions.setPosts(oldPosts));
   }
 }
@@ -210,15 +222,11 @@ function* deletePost(action: any) {
   );
 
   yield put(actions.setPosts(newPosts));
-  socket().emit(SocketEvents.send_posts, newPosts);
 
   const response = yield call(api.call, 'deletePost', action.payload);
 
   if (response.ok) {
-    const newPosts = postState.posts.filter(
-      (post: any) => post._id !== response.data._id,
-    );
-    yield put(actions.setPosts(newPosts));
+    socket().emit(SocketEvents.send_posts, newPosts);
   } else {
     yield put(actions.setPosts([...postState.posts, response.data]));
   }
@@ -235,22 +243,21 @@ function* hidePost(action: any) {
   );
 
   yield put(actions.setPosts(updatedPosts));
-  socket().emit(SocketEvents.send_posts, updatedPosts);
 
   const response = yield call(api.call, 'hidePost', {
     id: action.payload,
   });
 
-  if (!response.ok) {
+  if (response.ok) {
+    socket().emit(SocketEvents.send_posts, updatedPosts);
+  } else {
     yield put(actions.setPosts(oldPosts));
   }
 }
 
 export function* postSaga() {
   yield takeLatest(actions.getPosts.type, getPosts);
-  yield takeLatest(actions.getPostsUpdate.type, getPostsUpdate);
   yield takeLatest(actions.getComments.type, getComments);
-  yield takeLatest(actions.getCommentsUpdate.type, getCommentsUpdate);
   yield takeLatest(actions.createComment.type, createComment);
   yield takeLatest(actions.createPost.type, createPost);
   yield takeLatest(actions.likePost.type, likePost);

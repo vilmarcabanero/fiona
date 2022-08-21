@@ -1,6 +1,8 @@
+import { User } from 'db/models/User';
+
 /* --- STATE --- */
 export interface UserState {
-  userDetails: any;
+  userDetails: User;
   loginPayload: any;
   loginModalOpen: boolean;
   registerModalOpen: boolean;
@@ -14,4 +16,17 @@ export interface UserState {
   passwordError: any;
   allUsers: any;
   userLoading: boolean;
+}
+
+export interface JwtDecode {
+  iat: number;
+  _id: string;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+  user: User;
+  message: string;
+  statusCode: number;
+  error: string;
 }
