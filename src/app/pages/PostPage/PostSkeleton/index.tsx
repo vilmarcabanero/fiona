@@ -6,11 +6,19 @@ import {
   CardHeader,
   Skeleton,
 } from '@mui/material';
+import { selectUser } from 'app/pages/Auth/slice/selectors';
+import { useSelector } from 'react-redux';
 
 export function PostSkeleton() {
+  const { isLoggedIn } = useSelector(selectUser);
   return (
     <Card
-      sx={{ maxWidth: 'md' }}
+      sx={{
+        maxWidth: 'md',
+        '&:first-child': {
+          marginTop: !isLoggedIn ? '1rem' : '',
+        },
+      }}
       style={{ marginBottom: '1rem', paddingBottom: '1rem' }}
     >
       <CardHeader

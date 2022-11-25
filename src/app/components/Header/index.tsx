@@ -71,7 +71,7 @@ export function Header(props: Props) {
             }}
           >
             {/* {isLoggedIn && <PostForm />} */}
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
               <IconButton
                 sx={{ width: 41, height: 41, background: '#E1E1E1' }}
                 onClick={() => {
@@ -80,7 +80,7 @@ export function Header(props: Props) {
               >
                 <MessageIcon sx={{ color: 'black' }} />
               </IconButton>
-            )}
+            )} */}
 
             {isLoggedIn ? (
               <Auth />

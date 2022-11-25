@@ -63,7 +63,12 @@ export function PostForm(props: Props) {
 
   const ModalButton = (
     <Card
-      sx={{ maxWidth: 'md', border: '1px solid #e1e1e1', marginBottom: '1rem' }}
+      sx={{
+        maxWidth: 'md',
+        border: '1px solid #e1e1e1',
+        marginBottom: '1rem',
+        marginTop: '1rem',
+      }}
       variant="outlined"
     >
       <CardContent sx={{ marginBottom: '-10px', display: 'flex' }}>

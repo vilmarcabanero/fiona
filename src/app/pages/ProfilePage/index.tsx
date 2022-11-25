@@ -30,14 +30,17 @@ export function ProfilePage(props: any) {
     <React.Fragment>
       <Header />
 
-      <Container maxWidth="md">
-        {profileLoading ? (
+      <Container maxWidth="md" sx={{ marginTop: '1rem' }}>
+        {/* {profileLoading ? (
           <ProfilePageSkeleton />
         ) : (
           <div>
-            {currentUser.firstName} <br /> <ProfilePictureUpload />
+            {currentUser.firstName}
+            <br /> <ProfilePictureUpload />
+            Not yet implemented.
           </div>
-        )}
+        )} */}
+        <div>Not yet implemented.</div>
       </Container>
     </React.Fragment>
   );

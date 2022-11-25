@@ -105,7 +105,13 @@ export function Post(props: Props) {
 
   return (
     <Card
-      sx={{ maxWidth: 'md', border: '1px solid #e1e1e1' }}
+      sx={{
+        maxWidth: 'md',
+        border: '1px solid #e1e1e1',
+        '&:first-child': {
+          marginTop: !isLoggedIn ? '1rem' : '',
+        },
+      }}
       style={{ marginBottom: '1rem', paddingBottom: '0rem' }}
       variant="outlined"
     >
@@ -116,7 +122,7 @@ export function Post(props: Props) {
           <ProfilePicture
             avatar={avatar}
             bgcolor={colors[avatarColor]}
-            onClick={() => navigate(`/${props.post.username}`)}
+            // onClick={() => navigate(`/${props.post.username}`)}
           />
         }
         action={
@@ -139,15 +145,15 @@ export function Post(props: Props) {
             variant="subtitle2"
             sx={{
               fontWeight: 'bold',
-              cursor: 'pointer',
-              '&:hover': {
-                textDecoration: 'underline',
-              },
+              // cursor: 'pointer',
+              // '&:hover': {
+              //   textDecoration: 'underline',
+              // },
             }}
-            onClick={() => {
-              navigate(`/${props.post.username}`);
-              scrollToTop();
-            }}
+            // onClick={() => {
+            //   navigate(`/${props.post.username}`);
+            //   scrollToTop();
+            // }}
           >
             {props.post.userName}
           </Typography>
