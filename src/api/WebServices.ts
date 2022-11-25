@@ -26,6 +26,10 @@ const WebServices = (options = API.SERVER.WEBSERVICES.OPTIONS) => {
       path: '/auth/user',
       method: 'getNoParam',
     },
+    getUserByUsername: {
+      path: '/auth/user',
+      method: 'get',
+    },
     getAllUsers: {
       path: '/auth/user/all',
       method: 'getNoParam',
@@ -62,6 +66,13 @@ const WebServices = (options = API.SERVER.WEBSERVICES.OPTIONS) => {
       path: '/posts/hide',
       method: 'patch',
     },
+    uploadProfilePicture: {
+      method: 'post',
+    },
+    updateProfilePicture: {
+      path: '/auth/user/profile-picture',
+      method: 'patchNoParam',
+    },
   };
   const call = (type: any, params: any = {}, customPath = null) => {
     const { method, path, headers } = mapping[type];
@@ -70,6 +81,8 @@ const WebServices = (options = API.SERVER.WEBSERVICES.OPTIONS) => {
         return api.update(`${path}/${params.id}`, params.data);
       case 'patch':
         return api.patch(`${path}/${params.id}`, params.data);
+      case 'patchNoParam':
+        return api.patch(`${path}`, params);
       case 'delete':
         return api.delete(`${path}/${params}`);
       case 'get':

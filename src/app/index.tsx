@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
 
 import { GlobalStyle } from '../styles/global-styles';
 
@@ -16,9 +16,15 @@ import { GlobalStyle } from '../styles/global-styles';
 import { NotFoundPage } from './pages/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
 import { PostPage } from './pages/PostPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { ProfileNotFoundPage } from './pages/ProfilePage/ProfileNotFoundPage';
+import { selectProfile } from './pages/ProfilePage/slice/selectors';
+import { useSelector } from 'react-redux';
+import { ChatPage } from './pages/ChatPage';
 
 export function App() {
   const { i18n } = useTranslation();
+  const { currentUser } = useSelector(selectProfile);
   return (
     <BrowserRouter>
       <Helmet
@@ -29,10 +35,15 @@ export function App() {
         <meta name="description" content="A Fiona application" />
       </Helmet>
 
-      <Switch>
-        <Route exact path={process.env.PUBLIC_URL + '/'} component={PostPage} />
-        <Route component={NotFoundPage} />
-      </Switch>
+      <Routes>
+        <Route path={process.env.PUBLIC_URL + '/'} element={<PostPage />} />
+        <Route path={process.env.PUBLIC_URL + '/chat'} element={<ChatPage />} />
+        <Route
+          path={process.env.PUBLIC_URL + '/:username'}
+          element={!currentUser ? <ProfileNotFoundPage /> : <ProfilePage />}
+        />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
       <GlobalStyle />
     </BrowserRouter>
   );

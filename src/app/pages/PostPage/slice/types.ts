@@ -10,4 +10,5 @@ export interface PostState {
   postPayload: any;
   postModalOpen: boolean;
   postLoading: boolean;
+  popoverOpen: boolean;
 }

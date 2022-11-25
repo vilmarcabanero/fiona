@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import { IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectPost } from '../../pages/PostPage/slice/selectors';
+import { usePostSlice } from 'app/pages/PostPage/slice';
 
 interface Props {
   button: any;
@@ -14,7 +16,10 @@ export default function PopOver(props: Props) {
     null,
   );
 
-  const { isEdit } = useSelector(selectPost);
+  const { popoverOpen } = useSelector(selectPost);
+
+  const { actions } = usePostSlice();
+  const dispatch = useDispatch();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -25,10 +30,11 @@ export default function PopOver(props: Props) {
   };
 
   React.useEffect(() => {
-    if (isEdit) {
+    if (popoverOpen) {
       handleClose();
+      dispatch(actions.setPopoverOpen(false));
     }
-  }, [anchorEl, isEdit]);
+  }, [anchorEl, popoverOpen]);
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;

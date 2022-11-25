@@ -3,9 +3,20 @@
  * PostForm
  *
  */
-import { Close } from '@mui/icons-material';
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
+import { Close, Public } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material';
 import CustomModal from 'app/components/Modal';
+import { ProfilePicture } from 'app/components/ProfilePicture';
+import { selectUser } from 'app/pages/Auth/slice/selectors';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePostSlice } from '../slice';
@@ -28,6 +39,7 @@ export function PostForm(props: Props) {
   };
 
   const { isEdit, postModalOpen, postPayload } = useSelector(selectPost);
+  const { userDetails } = useSelector(selectUser);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -49,8 +61,34 @@ export function PostForm(props: Props) {
     dispatch(actions.setIsEdit(false));
   };
 
+  const ModalButton = (
+    <Card
+      sx={{
+        maxWidth: 'md',
+        border: '1px solid #e1e1e1',
+        marginBottom: '1rem',
+        marginTop: '1rem',
+      }}
+      variant="outlined"
+    >
+      <CardContent sx={{ marginBottom: '-10px', display: 'flex' }}>
+        <ProfilePicture />
+        <TextField
+          value=""
+          onClick={handleOpen}
+          fullWidth
+          placeholder="Post your memories here."
+          size="small"
+          sx={{ cursor: 'pointer', borderRadius: '20px', marginLeft: '10px' }}
+        />
+      </CardContent>
+      {/* <Divider />
+      <CardContent sx={{ marginBottom: '-8px' }}>Card actions</CardContent> */}
+    </Card>
+  );
+
   const modalProps = {
-    button: 'Write a post',
+    button: ModalButton,
     style,
     open: postModalOpen,
     handleClose,
@@ -61,42 +99,72 @@ export function PostForm(props: Props) {
     <CustomModal modal={modalProps}>
       <Box
         component="form"
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '25ch' },
-        }}
-        style={{
-          marginBottom: '0.75rem',
-          maxWidth: '90%',
-          margin: 'auto',
-        }}
         noValidate
         autoComplete="off"
         onSubmit={handleCreatePost}
       >
-        <Box style={{ position: 'relative', textAlign: 'center' }}>
-          <Typography variant="h5">
-            {isEdit ? 'Edit' : 'Write'} your Post!
+        <Box
+          style={{ position: 'relative', margin: '12px', textAlign: 'center' }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            {isEdit ? 'Edit' : 'Write'} post
           </Typography>
           <IconButton
             onClick={handleClose}
-            style={{ position: 'absolute', right: -15, top: -7 }}
+            sx={{
+              position: 'absolute',
+              top: '-3px',
+              right: 0,
+              backgroundColor: 'rgba(237,237,237, 0.75)',
+            }}
           >
             <Close />
           </IconButton>
         </Box>
-        <Box>
-          <Typography variant="caption">
-            Note: Press "Shift" and "Enter" keys as an alternative to submit
-            your post.
-          </Typography>
+        <Divider />
+        <Box sx={{ display: 'flex', margin: '12px' }}>
+          <ProfilePicture />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginLeft: '10px',
+            }}
+          >
+            <Typography>{`${userDetails.firstName} ${userDetails.lastName}`}</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+              }}
+            >
+              <Public
+                sx={{
+                  fontSize: '12px',
+                  marginRight: '3px',
+                  marginBottom: '2.5px',
+                }}
+              />
+              <Typography variant="body2" sx={{ fontSize: '12px' }}>
+                Public
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ margin: '12px' }}>
           <TextField
             id="post-write"
-            label="Write a post."
-            placeholder="Write your post here."
+            label=""
+            placeholder="Post your memories here."
             multiline
+            minRows={3}
             variant="standard"
             value={postPayload.message}
-            style={{ width: '100%' }}
+            // fullWidth
+            sx={{ width: '100%' }}
+            InputProps={{ style: { fontSize: '30px' } }}
+            InputLabelProps={{ style: { fontSize: '30px' } }}
             onChange={handleChange}
             onKeyUp={e => {
               if (e.key === 'Enter' && e.shiftKey) {
@@ -109,7 +177,10 @@ export function PostForm(props: Props) {
             variant="contained"
             color="primary"
             fullWidth
-            style={{ marginBottom: '1rem', marginTop: '1rem' }}
+            style={{
+              textTransform: 'none',
+              marginTop: '1rem',
+            }}
           >
             {isEdit ? 'Save' : 'Post'}
           </Button>

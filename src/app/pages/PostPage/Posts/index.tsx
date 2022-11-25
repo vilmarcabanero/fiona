@@ -4,7 +4,7 @@
  * Posts
  *
  */
-import { Container } from '@mui/material';
+import { Box } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../Post';
@@ -40,31 +40,11 @@ export function Posts(props: Props) {
     });
   }, [onlineStatus]);
 
-  // Receive data from socket server.
-  React.useEffect(() => {
-    socket().on(SocketEvents.receive_posts, (data: IPost[]) => {
-      dispatch(actions.setPosts([...data]));
-      db._setPosts([...data]);
-    });
-    socket().on(SocketEvents.receive_comments, data => {
-      dispatch(actions.setComments([...data]));
-      _setComments([...data]);
-    });
-    socket().on(SocketEvents.receive_all_users, data => {
-      dispatch(userActions.setAllUsers([...data]));
-      _setAllUsers([...data]);
-    });
-    socket().on(SocketEvents.receive_user, (data: ISocketUser) => {
-      dispatch(userActions.setUser(data.user));
-      _setUser(data.userId, data.user);
-    });
-  }, [socket]);
-
   return (
-    <Container style={{ paddingBottom: '1.5rem' }}>
+    <Box style={{ paddingBottom: '1.5rem' }}>
       {postLoading
         ? [...new Array(5)].map((item, index) => <PostSkeleton key={index} />)
         : posts.map((post: any) => <Post post={post} key={post._id} />)}
-    </Container>
+    </Box>
   );
 }

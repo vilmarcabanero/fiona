@@ -12,6 +12,7 @@ export const initialState: PostState = {
   postPayload: { message: '' },
   postModalOpen: false,
   postLoading: false,
+  popoverOpen: false,
 };
 
 const slice = createSlice({
@@ -54,6 +55,9 @@ const slice = createSlice({
     getPostsUpdate() {},
     getCommentsUpdate() {},
     hidePost(state, action: PayloadAction<any>) {},
+    setPopoverOpen(state, action: PayloadAction<boolean>) {
+      state.popoverOpen = action.payload;
+    },
   },
 });
 

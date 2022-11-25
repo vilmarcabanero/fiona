@@ -3,6 +3,7 @@
  * PostForm
  *
  */
+import * as React from 'react';
 import { Close } from '@mui/icons-material';
 import {
   Box,
@@ -15,7 +16,6 @@ import {
 import { Field, Form, Formik } from 'formik';
 import { object, ref, string } from 'yup';
 import CustomModal from 'app/components/Modal';
-import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useUserSlice } from '../slice';
 import { selectUser } from '../slice/selectors';
