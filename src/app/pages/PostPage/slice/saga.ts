@@ -14,42 +14,40 @@ import {
 } from 'db/controllers/comments.controller';
 
 function* getPosts() {
+  const api = yield createAPI();
+  let response: ApiResponse<Post[]>;
   const cachedPosts: Post[] | null = yield db._getAllPosts();
 
   if (cachedPosts) {
-    const posts = cachedPosts.filter((post: any) => !post.hidden);
-    yield put(actions.setPosts(posts));
+    const _posts = cachedPosts.filter((post: any) => !post.hidden);
+    yield put(actions.setPosts(_posts));
   } else {
-    const api = yield createAPI();
-
     yield put(actions.setPostLoading(true));
-    const response: ApiResponse<Post[]> = yield call(api.call, 'getAllPosts');
-    yield put(actions.setPostLoading(false));
-    const posts: Post[] | undefined = response.data?.filter(
-      post => !post.hidden,
-    );
+  }
 
-    if (response.ok) {
-      yield put(actions.setPosts(posts));
-      if (posts) yield db._setPosts(posts);
-    }
+  response = yield call(api.call, 'getAllPosts');
+  yield put(actions.setPostLoading(false));
+  const posts = response.data?.filter(post => !post.hidden);
+
+  if (response.ok) {
+    yield put(actions.setPosts(posts));
+    if (posts) yield db._setPosts(posts);
   }
 }
 
 function* getComments() {
+  const api = yield createAPI();
+  let response: any;
   const cachedComments: Post[] | null = yield _getAllComments();
 
   if (cachedComments) {
     yield put(actions.setComments(cachedComments));
-  } else {
-    const api = yield createAPI();
+  }
+  response = yield call(api.call, 'getAllComments');
 
-    const response = yield call(api.call, 'getAllComments');
-
-    if (response.ok) {
-      yield put(actions.setComments(response.data));
-      if (response.data) yield _setComments(response.data);
-    }
+  if (response.ok) {
+    yield put(actions.setComments(response.data));
+    if (response.data) yield _setComments(response.data);
   }
 }
 
@@ -89,7 +87,7 @@ function* createComment(action: any) {
   if (ok) {
     const updatedComments = [...postState.comments, data];
     yield put(actions.setComments(updatedComments));
-    socket().emit(SocketEvents.send_comments, updatedComments);
+    // socket().emit(SocketEvents.send_comments, updatedComments);
   } else {
     yield put(actions.setComments(updatedComments));
   }
@@ -126,7 +124,8 @@ function* createPost(action: any) {
   if (response.ok) {
     const newPosts = [...updatedPosts, response.data]; // This is necessary to put to the state the real data like real _id.
     yield put(actions.setPosts(newPosts));
-    socket().emit(SocketEvents.send_posts, newPosts);
+    db._setPosts(newPosts);
+    // socket().emit(SocketEvents.send_posts, newPosts);
   } else {
     // yield put(actions.setPosts(updatedPosts));
   }
@@ -206,7 +205,8 @@ function* updatePost(action: any) {
   });
 
   if (response.ok) {
-    socket().emit(SocketEvents.send_posts, updatedPosts);
+    // socket().emit(SocketEvents.send_posts, updatedPosts);
+    yield db._setPosts(updatedPosts);
   } else {
     yield put(actions.setPosts(oldPosts));
   }
@@ -226,7 +226,8 @@ function* deletePost(action: any) {
   const response = yield call(api.call, 'deletePost', action.payload);
 
   if (response.ok) {
-    socket().emit(SocketEvents.send_posts, newPosts);
+    // socket().emit(SocketEvents.send_posts, newPosts);
+    db._setPosts(newPosts);
   } else {
     yield put(actions.setPosts([...postState.posts, response.data]));
   }
@@ -249,7 +250,8 @@ function* hidePost(action: any) {
   });
 
   if (response.ok) {
-    socket().emit(SocketEvents.send_posts, updatedPosts);
+    // socket().emit(SocketEvents.send_posts, updatedPosts);
+    db._setPosts(updatedPosts);
   } else {
     yield put(actions.setPosts(oldPosts));
   }
